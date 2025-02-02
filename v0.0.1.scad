@@ -1,0 +1,34 @@
+$fn=100;
+
+CPU_LENGTH = 50; // X
+CPU_WIDTH = 50; // Y
+CPU_HEIGHT = 5; // Z
+CPU_ADDITIONAL_HEIGHT = 3;
+BASE_HEIGHT = 2;
+WALL_SIDE_HEIGHT = 1;
+WALL_BACK_HEIGHT = 1.5;
+WALL_PICK_LENGTH = (CPU_LENGTH/2)+1;
+WALL_PICK_HEIGHT = 1.5;
+NUM_CILIDENRS_CUT = 3;
+
+difference() {
+    cube([CPU_LENGTH, CPU_WIDTH, CPU_HEIGHT + CPU_ADDITIONAL_HEIGHT]);
+    translate([WALL_SIDE_HEIGHT, WALL_SIDE_HEIGHT, BASE_HEIGHT]){
+        cube([CPU_LENGTH-(2*WALL_SIDE_HEIGHT), CPU_WIDTH-(2*WALL_BACK_HEIGHT), 40]);
+    }
+    translate([0, CPU_WIDTH/2, CPU_HEIGHT+BASE_HEIGHT+10]){
+        rotate([90, 0, 90]){
+            cylinder(CPU_LENGTH, 13, 13);
+        }
+    }
+    for ( i = [0 : NUM_CILIDENRS_CUT - 1] ){
+        translate([(CPU_LENGTH/NUM_CILIDENRS_CUT*i) + (CPU_LENGTH/NUM_CILIDENRS_CUT/2), CPU_WIDTH, (CPU_HEIGHT + CPU_ADDITIONAL_HEIGHT) / 2]){
+            rotate([90, 0, 0]){
+                cylinder(WALL_BACK_HEIGHT/2, 3, 3);
+            }
+        }
+    }
+}
+translate([(CPU_LENGTH - WALL_PICK_LENGTH) / 2, 0, CPU_HEIGHT + CPU_ADDITIONAL_HEIGHT]){
+    cube([WALL_PICK_LENGTH , WALL_SIDE_HEIGHT, WALL_BACK_HEIGHT]);
+}
